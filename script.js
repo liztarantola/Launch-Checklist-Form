@@ -4,7 +4,6 @@ window.addEventListener("load", function() {
    fetch("https://handlers.education.launchcode.org/static/planets.json").then(function(response) {
       return response.json();
    }).then(function(json) {
-      console.log(json);
       const destination = document.querySelector("#missionTarget");
       let planet = 
          `
@@ -24,21 +23,17 @@ window.addEventListener("load", function() {
       const form = document.querySelector("form");
       form.addEventListener("submit", function(event) {
          event.preventDefault();
-         let pilotInput = document.querySelector("input[name=pilotName]");
-         let pilot = pilotInput.value;
-         let copilotInput = document.querySelector("input[name=copilotName]");
-         let copilot = copilotInput.value;
-         let fuelInput = document.querySelector("input[name=fuelLevel]");
-         let fuel = Number(fuelInput.value);
-         let cargoInput= document.querySelector("input[name=cargoMass]");
-         let cargo = Number(cargoInput.value);
+         let pilot = document.querySelector("input[name=pilotName]").value;
+         let copilot = document.querySelector("input[name=copilotName]").value;
+         let fuel = Number(document.querySelector("input[name=fuelLevel]").value);
+         let cargo = Number(document.querySelector("input[name=cargoMass]").value);
          let status = document.getElementById('launchStatus');
          let pilotInfo = document.getElementById('pilotStatus');
          let copilotInfo = document.getElementById("copilotStatus");
          let fuelInfo = document.getElementById('fuelStatus');
          let cargoInfo = document.getElementById('cargoStatus');
-
-         if (pilot === "" || copilot === "" || fuel ===  "" || cargo === "") {
+        
+         if (pilot === "" || copilot === "" || fuel ===  0 || cargo === 0) {
             alert("All fields are required!");
             
             } else if (isNaN(pilot) === false || isNaN(copilot) === false || isNaN(fuel)|| isNaN(cargo)) {
@@ -52,7 +47,7 @@ window.addEventListener("load", function() {
                copilotInfo.innerHTML = `Co-pilot ${pilot} is ready for launch.`; 
                fuelInfo.innerHTML = "Fuel level too low for launch.";
             
-            } else if (cargo > 10000) {
+            }  else if (cargo > 10000) {
                document.getElementById("faultyItems").style.visibility = "visible";
                status.innerHTML = "Shuttle not ready for launch.";
                status.style = "color:red";
@@ -64,6 +59,8 @@ window.addEventListener("load", function() {
                   document.getElementById("faultyItems").style.visibility = "visible";
                   status.innerHTML = "Shuttle is ready for launch.";
                   status.style = "color:green";
+                  pilotInfo.innerHTML = `Pilot ${pilot} is ready for launch.`;
+                  copilotInfo.innerHTML = `Co-pilot ${pilot} is ready for launch.`; 
                } 
       });
    });     
